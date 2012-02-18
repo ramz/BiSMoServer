@@ -18,21 +18,7 @@ public class Start extends ServerResource{
            JSONObject jsonObj = new JSONObject();
            jsonObj.put("message", "welcome to BiSMo");
            JsonRepresentation jsonRep = new JsonRepresentation(jsonObj);
-        	  return jsonRep;        	  
-              // Generate a DOM document representing the list of
-              // items.
-//        	  DomRepresentation domRep = new DomRepresentation(MediaType.TEXT_XML);
-//              Document d = domRep.getDocument();
-//              Element r = d.createElement("expire_date");
-//              d.appendChild(r);
-//               Element date = d.createElement("date");
-//               date.appendChild(d.createTextNode(new Date().toLocaleString()));
-//               r.appendChild(date);
-//              d.normalizeDocument();
-//  
-//              // Returns the XML representation of this document.
-//              return domRep;
-           
+        	  return jsonRep;
           } catch (Exception e) {
               e.printStackTrace();
           }

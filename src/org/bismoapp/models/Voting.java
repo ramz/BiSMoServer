@@ -1,13 +1,13 @@
 package org.bismoapp.models;
 
 import java.io.Serializable;
-
 import javax.persistence.Id;
 
-public class Client implements Serializable{
+public class Voting implements Serializable {
 
-	@Id public Long id;
+	@Id Long id;
 	private String clientId;
+	private String showId;
 	private String tvId;
 	
 	public String getClientId() {
@@ -15,6 +15,12 @@ public class Client implements Serializable{
 	}
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
+	}
+	public String getShowId() {
+		return showId;
+	}
+	public void setShowId(String showId) {
+		this.showId = showId;
 	}
 	public String getTvId() {
 		return tvId;

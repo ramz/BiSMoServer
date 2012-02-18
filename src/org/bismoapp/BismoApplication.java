@@ -1,11 +1,22 @@
 package org.bismoapp;
 
+import org.bismoapp.models.Client;
+import org.bismoapp.models.NextShow;
+import org.bismoapp.models.Show;
+import org.bismoapp.models.Tv;
+import org.bismoapp.models.TvApp;
+import org.bismoapp.models.Voting;
+import org.bismoapp.resources.RegisterClient;
+import org.bismoapp.resources.RegisterTv;
+import org.bismoapp.resources.RegisterVote;
+import org.bismoapp.resources.RetrieveNextShow;
+import org.bismoapp.resources.RetrieveTvShows;
 import org.bismoapp.resources.Start;
-import org.bismoapp.resources.Ping;
-import org.bismoapp.resources.Pong;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
+
+import com.googlecode.objectify.ObjectifyService;
 
 public class BismoApplication extends Application{
 
@@ -14,12 +25,32 @@ public class BismoApplication extends Application{
 	 */
 	@Override
 	public synchronized Restlet createRoot() {
-	    // Create a router Restlet that routes each call to a
-	    // new Resource
+		//Register Datastore kinds
+	    ObjectifyService.register(Client.class);
+	    ObjectifyService.register(Tv.class);
+	    ObjectifyService.register(Voting.class);
+	    ObjectifyService.register(Show.class);
+	    ObjectifyService.register(NextShow.class);
+	    ObjectifyService.register(TvApp.class);
+	    
 	    Router router = new Router(getContext());
 	    router.attachDefault(Start.class);
-	    router.attach("/ping", Ping.class);
-	    router.attach("/pong", Pong.class);
+	    
+	    //register client/tv combo
+	    router.attach("/tv/{tvId}/client/{clientId}",RegisterClient.class);
+	    
+	    //register tv
+	    router.attach("/tv/{tvId}",RegisterTv.class);
+	    
+	    //get shows available to a tv
+	    router.attach("/tv/{tvId}/shows",RetrieveTvShows.class);
+	    
+	    //get the next show coming up on a tv
+	    router.attach("/tv/{tvId}/nextShow",RetrieveNextShow.class);
+
+	    //vote for a show
+	    router.attach("/show/{showId}",RegisterVote.class);
+	    
 	    return router;
 	}
 }

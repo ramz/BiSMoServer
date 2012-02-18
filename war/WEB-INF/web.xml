@@ -5,10 +5,10 @@
  <context-param>
   <param-name>org.restlet.application</param-name>
   <param-value>
-   org.bismoapp.TestApplication
+   org.bismoapp.BismoApplication
       </param-value>
  </context-param>
-
+  
  <!-- Restlet adapter -->
  <servlet>
   <servlet-name>RestletServlet</servlet-name>
