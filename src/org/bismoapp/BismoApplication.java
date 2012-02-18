@@ -6,10 +6,14 @@ import org.bismoapp.models.Show;
 import org.bismoapp.models.Tv;
 import org.bismoapp.models.TvApp;
 import org.bismoapp.models.Voting;
+import org.bismoapp.resources.CloseVoting;
 import org.bismoapp.resources.RegisterClient;
+import org.bismoapp.resources.RegisterShow;
 import org.bismoapp.resources.RegisterTv;
+import org.bismoapp.resources.RegisterTvApp;
 import org.bismoapp.resources.RegisterVote;
 import org.bismoapp.resources.RetrieveNextShow;
+import org.bismoapp.resources.RetrieveTvApps;
 import org.bismoapp.resources.RetrieveTvShows;
 import org.bismoapp.resources.Start;
 import org.restlet.Application;
@@ -44,12 +48,24 @@ public class BismoApplication extends Application{
 	    
 	    //get shows available to a tv
 	    router.attach("/tv/{tvId}/shows",RetrieveTvShows.class);
+
+	    //get apps available to a tv
+	    router.attach("/tv/{tvId}/apps",RetrieveTvApps.class);
+	    
+	    //create a show
+	    router.attach("/show",RegisterShow.class);
 	    
 	    //get the next show coming up on a tv
 	    router.attach("/tv/{tvId}/nextShow",RetrieveNextShow.class);
 
 	    //vote for a show
-	    router.attach("/show/{showId}",RegisterVote.class);
+	    router.attach("/show/{showId}/client/{clientId}",RegisterVote.class);
+	    
+	    //close voting on a show
+	    router.attach("/tv/{tvId}/closeVoting",CloseVoting.class);
+	    
+	    //add apps to a tv
+	    router.attach("/tv/{tvId}/addApp",RegisterTvApp.class);
 	    
 	    return router;
 	}

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Id;
 
+import org.json.JSONObject;
+
 public class Client implements Serializable{
 
 	@Id public Long id;
@@ -21,5 +23,10 @@ public class Client implements Serializable{
 	}
 	public void setTvId(String tvId) {
 		this.tvId = tvId;
+	}
+	
+	//TODO: implement
+	public JSONObject toJSON(){
+		return null;
 	}
 }

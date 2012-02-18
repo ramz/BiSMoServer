@@ -3,12 +3,13 @@ package org.bismoapp.models;
 import java.io.Serializable;
 import javax.persistence.Id;
 
+import org.json.JSONObject;
+
 public class Voting implements Serializable {
 
 	@Id Long id;
 	private String clientId;
-	private String showId;
-	private String tvId;
+	private Long showId;
 	
 	public String getClientId() {
 		return clientId;
@@ -16,16 +17,15 @@ public class Voting implements Serializable {
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
-	public String getShowId() {
+	public Long getShowId() {
 		return showId;
 	}
-	public void setShowId(String showId) {
+	public void setShowId(Long showId) {
 		this.showId = showId;
 	}
-	public String getTvId() {
-		return tvId;
-	}
-	public void setTvId(String tvId) {
-		this.tvId = tvId;
+	
+	//TODO: implement
+	public JSONObject toJSON(){
+		return null;
 	}
 }

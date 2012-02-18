@@ -15,7 +15,7 @@ public class RegisterClient extends ServerResource{
  @Post("json")
   public Representation acceptRepresentation(Representation entity){
      Objectify ofy = ObjectifyService.begin();
-     //delete all previous entries with the client ID
+     //TODO: delete all previous entries with the client ID
      
      Client client = new Client();
      client.setClientId((String) getRequest().getAttributes().get("clientId"));
@@ -24,11 +24,10 @@ public class RegisterClient extends ServerResource{
      ofy.put(client);
 
      try {
-    	Client clientFetched = ofy.query(Client.class).filter("clientId", client.getClientId()).get();
     	JSONObject jsonObj = new JSONObject();
       	jsonObj.put("message", "Client registered");
-      	jsonObj.put("tvId",clientFetched.getTvId());
-      	jsonObj.put("clientId",clientFetched.getClientId());
+      	jsonObj.put("tvId",client.getTvId());
+      	jsonObj.put("clientId",client.getClientId());
       	JsonRepresentation jsonRep = new JsonRepresentation(jsonObj);
    	 	return jsonRep;
      } catch (Exception e) {

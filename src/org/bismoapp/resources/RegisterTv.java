@@ -28,13 +28,13 @@ public class RegisterTv extends ServerResource{
   public Representation acceptRepresentation(Representation entity){
      Objectify ofy = ObjectifyService.begin();
      Tv tv = new Tv();
-     tv.setTvId((String) getRequest().getAttributes().get("tvId"));
+     tv.tvId = (String) getRequest().getAttributes().get("tvId");
      ofy.put(tv);
      try {
-    	Tv tvFetched = ofy.query(Tv.class).filter("tvId", tv.getTvId()).get();
+    	Tv tvFetched = ofy.query(Tv.class).filter("tvId", tv.tvId).get();
     	JSONObject jsonObj = new JSONObject();
       	jsonObj.put("message", "Tv registered");
-      	jsonObj.put("tvId",tvFetched.getTvId());
+      	jsonObj.put("tvId",tvFetched.tvId);
       	JsonRepresentation jsonRep = new JsonRepresentation(jsonObj);
    	 	return jsonRep;
      } catch (Exception e) {

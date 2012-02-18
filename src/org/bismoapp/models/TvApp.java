@@ -1,7 +1,11 @@
 package org.bismoapp.models;
 
 import java.io.Serializable;
+
 import javax.persistence.Id;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class TvApp implements Serializable {
 
@@ -9,7 +13,7 @@ public class TvApp implements Serializable {
 	private String tvId;
 	private String appId;
 	private String appName;
-	private String requiredParam;
+	private String appParameter;
 	
 	public String getTvId() {
 		return tvId;
@@ -29,11 +33,19 @@ public class TvApp implements Serializable {
 	public void setAppName(String appName) {
 		this.appName = appName;
 	}
-	public String getRequiredParam() {
-		return requiredParam;
+	public String getAppParameter() {
+		return appParameter;
 	}
-	public void setRequiredParam(String requiredParam) {
-		this.requiredParam = requiredParam;
+	public void setAppParameter(String appParameter) {
+		this.appParameter = appParameter;
 	}
 	
+	//TODO: implement
+	public JSONObject toJSON() throws JSONException{
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("name", appName);
+		jsonObj.put("parameter", appParameter);
+		jsonObj.put("appId", appId);
+		return jsonObj;
+	}
 }

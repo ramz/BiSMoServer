@@ -1,40 +1,53 @@
 package org.bismoapp.resources;
 
-import org.bismoapp.models.Tv;
+import org.bismoapp.models.Show;
+import org.bismoapp.models.Voting;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.restlet.data.MediaType;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
-import org.restlet.representation.StringRepresentation;
-import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
 
 public class RegisterVote extends ServerResource{
 
- @Get("html")
-  public Representation represent(){	 
-	 StringBuilder stringBuilder = new StringBuilder();
-     stringBuilder.append("<html>");
-     stringBuilder.append("<head><title>BiSMo</title></head>");
-     stringBuilder.append("<body style='background-color:#0f0'><h1><blink>Patience... landing pages coming soon<blink></h1><body>");
-     stringBuilder.append("</html>");
-     return new StringRepresentation(stringBuilder.toString(),MediaType.TEXT_HTML);
- }
- @Post("json")
+	public static int votesPerUser = 3;
+ @Post
   public Representation acceptRepresentation(Representation entity){
+	 String showString = (String) getRequest().getAttributes().get("showId");
+	 Long showId = Long.valueOf(showString);
+	 String clientId = (String) getRequest().getAttributes().get("clientId");
+     
+	 //TODO: check that client is still allowed to vote > return error message otherwise
+	 //TODO: check that the show actually exists > return error message otherwise
+	 //save vote
+     Voting voting = new Voting();
+     voting.setClientId(clientId);
+     voting.setShowId(showId);
      Objectify ofy = ObjectifyService.begin();
-     Tv tv = new Tv();
-     tv.setTvId((String) getRequest().getAttributes().get("tvId"));
-     ofy.put(tv);
+     ofy.put(voting);
+     
+     //update show table totalVotes
+     Show showFetched = ofy.get(Show.class,showId);
+     if(showFetched!=null){
+    	 showFetched.setTotalVotes(showFetched.getTotalVotes()+1);
+    	 ofy.put(showFetched);
+     }
+
+	 Query<Show> q = ofy.query(Show.class).filter("tvId =", showFetched.getTvId());
+
+
      try {
-    	Tv tvFetched = ofy.query(Tv.class).filter("tvId", tv.getTvId()).get();
+    	JSONArray showItems = new JSONArray();
+	   	 for (Show show: q) {
+		     showItems.put(show.toJSON());
+		 }
     	JSONObject jsonObj = new JSONObject();
-      	jsonObj.put("message", "Tv registered");
-      	jsonObj.put("tvId",tvFetched.getTvId());
+    	jsonObj.put("shows", showItems);
       	JsonRepresentation jsonRep = new JsonRepresentation(jsonObj);
    	 	return jsonRep;
      } catch (Exception e) {
