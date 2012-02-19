@@ -16,6 +16,7 @@ public class Show implements Serializable {
 	private String appId;
 	private int showDuration;
 	private int totalVotes=0;
+	private int numRounds=0;
 	
 	public String getTvId() {
 		return tvId;
@@ -54,7 +55,13 @@ public class Show implements Serializable {
 	public void setTotalVotes(int totalVotes) {
 		this.totalVotes = totalVotes;
 	}
-	
+
+	public int getNumRounds() {
+		return numRounds;
+	}
+	public void setNumRounds(int numRounds) {
+		this.numRounds = numRounds;
+	}	
 	//TODO: implement
 	public JSONObject toJSON() throws JSONException{
 		JSONObject jsonObj = new JSONObject();

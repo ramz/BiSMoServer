@@ -36,12 +36,33 @@ public class CloseVoting extends ServerResource{
 	 int numShows = 0;
    	 for (Show show: showVotes) {
    		 numShows++;
+   		 //remove all registered votes for the TV from voting
+   		 Query<Voting> votesFetched = ofy.query(Voting.class).filter("showId =", show.id);
+   	     try {
+   		   	 for (Voting voting: votesFetched) {
+   			     ofy.delete(voting);
+   			 }
+   	     } catch (Exception e) {
+   	         e.printStackTrace();
+   	     }  
+   	     
+   	     
    		 if(show.getTotalVotes()>mostVoted.getTotalVotes()){
    			 mostVoted = show;
+   		 }
+   		 if(show.getNumRounds()<3){
+   			 show.setNumRounds(show.getNumRounds()+1);
+   			 ofy.put(show);
+   		 }else{
+   			 if(show.getTotalVotes()==0){
+   				 ofy.delete(show);
+   				 numShows--;
+   			 }
    		 }
 	 }
 
    	 if(mostVoted.getTotalVotes()==0){
+   		 showVotes = ofy.query(Show.class).filter("tvId =", tvId);
    	   	 Random randomGenerator = new Random();
    	   	 int randomInt = randomGenerator.nextInt(numShows);
    	   	 int counter = 0;
@@ -65,17 +86,8 @@ public class CloseVoting extends ServerResource{
 	 
 	 //reset show with most votes to 0 total votes
 	 mostVoted.setTotalVotes(0);
+	 mostVoted.setNumRounds(0);
 	 ofy.put(mostVoted);
-	 
-	 //remove all clientIds for the showId from voting
-	 Query<Voting> votesFetched = ofy.query(Voting.class).filter("showId =", mostVoted.id);
-     try {
-	   	 for (Voting voting: votesFetched) {
-		     ofy.delete(voting);
-		 }
-     } catch (Exception e) {
-         e.printStackTrace();
-     }
      
      try {
      	JSONObject jsonObj = currentNextShow.toJSON();

@@ -9,13 +9,13 @@ import org.bismoapp.models.Voting;
 import org.bismoapp.resources.CloseVoting;
 import org.bismoapp.resources.RegisterClient;
 import org.bismoapp.resources.RegisterShow;
-import org.bismoapp.resources.RegisterTv;
+import org.bismoapp.resources.RegisterTv2;
 import org.bismoapp.resources.RegisterTvApp;
 import org.bismoapp.resources.RegisterVote;
 import org.bismoapp.resources.RetrieveNextShow;
 import org.bismoapp.resources.RetrieveTvApps;
 import org.bismoapp.resources.RetrieveTvShows;
-import org.bismoapp.resources.Start;
+import org.bismoapp.resources.Start2;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
@@ -38,13 +38,14 @@ public class BismoApplication extends Application{
 	    ObjectifyService.register(TvApp.class);
 	    
 	    Router router = new Router(getContext());
-	    router.attachDefault(Start.class);
+	    // called start2 since gae refuses to reset the cache for start.class!
+	    router.attachDefault(Start2.class);
 	    
 	    //register client/tv combo
 	    router.attach("/tv/{tvId}/client/{clientId}",RegisterClient.class);
 	    
-	    //register tv
-	    router.attach("/tv/{tvId}",RegisterTv.class);
+	    //register tv > called RegisterTv2 to avoid gae caching problems!
+	    router.attach("/tv/{tvId}",RegisterTv2.class);
 	    
 	    //get shows available to a tv
 	    router.attach("/tv/{tvId}/shows",RetrieveTvShows.class);

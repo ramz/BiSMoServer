@@ -31,7 +31,6 @@ public class RetrieveTvShows extends ServerResource{
 		 }
     	JSONObject jsonObj = new JSONObject();
     	jsonObj.put("shows", showItems);
-    	jsonObj.put("tvId", tvId);
       	JsonRepresentation jsonRep = new JsonRepresentation(jsonObj);
    	 	return jsonRep;
      } catch (Exception e) {
